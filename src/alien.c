@@ -132,28 +132,37 @@ typedef struct { char c; void *x; } s_void_p;
 /*              NAME          BASE       SIZEOF                 ALIGNMENT
                 ====          ====       ======                 =========       */
 #define type_map \
-        MENTRY( "void",       void,      void,                  AT_NONE         ) \
-        MENTRY( "byte",       byte,      unsigned char,         AT_CHAR         ) \
-        MENTRY( "char",       char,      char,                  AT_CHAR         ) \
-        MENTRY( "short",      short,     short,                 AT_SHORT        ) \
-        MENTRY( "ushort",     ushort,    unsigned short,        AT_SHORT        ) \
-        MENTRY( "int",        int,       int,                   AT_INT          ) \
-        MENTRY( "uint",       uint,      unsigned int,          AT_INT          ) \
-        MENTRY( "long",       long,      long,                  AT_LONG         ) \
-        MENTRY( "ulong",      ulong,     unsigned long,         AT_LONG         ) \
-        MENTRY( "ptrdiff_t",  ptrdiff_t, ptrdiff_t,             AT_PTRDIFF_T_P  ) \
-        MENTRY( "size_t",     size_t,    size_t,                AT_PTRDIFF_T_P  ) \
-        MENTRY( "float",      float,     float,                 AT_FLOAT        ) \
-        MENTRY( "double",     double,    double,                AT_DOUBLE       ) \
-        MENTRY( "string",     string,    char *,                AT_CHAR_P       ) \
-        MENTRY( "pointer",    pointer,   void *,                AT_VOID_P       ) \
-        MENTRY( "ref char",   refchar,   char *,                AT_CHAR_P       ) \
-        MENTRY( "ref int",    refint,    int *,                 AT_VOID_P       ) \
-        MENTRY( "ref uint",   refuint,   unsigned int *,        AT_VOID_P       ) \
-        MENTRY( "ref double", refdouble, double *,              AT_VOID_P       ) \
-        MENTRY( "longlong",   longlong,  long long,             AT_LONGLONG     ) \
-        MENTRY( "ulonglong",  ulonglong, unsigned long long,    AT_LONGLONG     ) \
-        MENTRY( "callback",   callback,  void *,                AT_VOID_P       )
+        MENTRY( "void",          void,         void,                  AT_NONE         ) \
+        MENTRY( "byte",          byte,         unsigned char,         AT_CHAR         ) \
+        MENTRY( "char",          char,         char,                  AT_CHAR         ) \
+        MENTRY( "short",         short,        short,                 AT_SHORT        ) \
+        MENTRY( "ushort",        ushort,       unsigned short,        AT_SHORT        ) \
+        MENTRY( "int",           int,          int,                   AT_INT          ) \
+        MENTRY( "uint",          uint,         unsigned int,          AT_INT          ) \
+        MENTRY( "long",          long,         long,                  AT_LONG         ) \
+        MENTRY( "ulong",         ulong,        unsigned long,         AT_LONG         ) \
+        MENTRY( "ptrdiff_t",     ptrdiff_t,    ptrdiff_t,             AT_PTRDIFF_T_P  ) \
+        MENTRY( "size_t",        size_t,       size_t,                AT_PTRDIFF_T_P  ) \
+        MENTRY( "float",         float,        float,                 AT_FLOAT        ) \
+        MENTRY( "double",        double,       double,                AT_DOUBLE       ) \
+        MENTRY( "string",        string,       char *,                AT_CHAR_P       ) \
+        MENTRY( "pointer",       pointer,      void *,                AT_VOID_P       ) \
+        MENTRY( "ref char",      refchar,      char *,                AT_CHAR_P       ) \
+        MENTRY( "ref short",     refshort,     short *,               AT_VOID_P       ) \
+        MENTRY( "ref ushort",    refushort,    unsigned short *,      AT_VOID_P       ) \
+        MENTRY( "ref int",       refint,       int *,                 AT_VOID_P       ) \
+        MENTRY( "ref uint",      refuint,      unsigned int *,        AT_VOID_P       ) \
+        MENTRY( "ref long",      reflong,      long *,                AT_VOID_P       ) \
+        MENTRY( "ref ulong",     refulong,     unsigned long *,       AT_VOID_P       ) \
+        MENTRY( "ref ptrdiff_t", refptrdiff_t, ptrdiff_t *,           AT_VOID_P       ) \
+        MENTRY( "ref size_t",    refsize_t,    size_t *,              AT_VOID_P       ) \
+        MENTRY( "ref float",     reffloat,     float *,               AT_VOID_P       ) \
+        MENTRY( "ref double",    refdouble,    double *,              AT_VOID_P       ) \
+        MENTRY( "longlong",      longlong,     long long,             AT_LONGLONG     ) \
+        MENTRY( "ulonglong",     ulonglong,    unsigned long long,    AT_LONGLONG     ) \
+        MENTRY( "ref longlong",  reflonglong,  long long *,           AT_VOID_P       ) \
+        MENTRY( "ref ulonglong", refulonglong, unsigned long long *,  AT_VOID_P       ) \
+        MENTRY( "callback",      callback,     void *,                AT_VOID_P       )
 
 typedef enum {
 #define MENTRY(_n, _b, _s, _a) ALIEN_SPLICE(AT_, _b),
@@ -169,19 +178,28 @@ static const char *const alien_typenames[] =  {
   NULL
 };
 
-#define ffi_type_byte      ffi_type_sint8
-#define ffi_type_char      ffi_type_uchar
-#define ffi_type_short     ffi_type_sshort
-#define ffi_type_int       ffi_type_sint
-#define ffi_type_long      ffi_type_slong
-#define ffi_type_string    ffi_type_pointer
-#define ffi_type_refchar   ffi_type_pointer
-#define ffi_type_refint    ffi_type_pointer
-#define ffi_type_refuint   ffi_type_pointer
-#define ffi_type_refdouble ffi_type_pointer
-#define ffi_type_longlong  ffi_type_sint64
-#define ffi_type_ulonglong ffi_type_uint64
-#define ffi_type_callback  ffi_type_pointer
+#define ffi_type_byte          ffi_type_sint8
+#define ffi_type_char          ffi_type_uchar
+#define ffi_type_short         ffi_type_sshort
+#define ffi_type_int           ffi_type_sint
+#define ffi_type_long          ffi_type_slong
+#define ffi_type_string        ffi_type_pointer
+#define ffi_type_refchar       ffi_type_pointer
+#define ffi_type_refshort      ffi_type_pointer
+#define ffi_type_refushort     ffi_type_pointer
+#define ffi_type_refint        ffi_type_pointer
+#define ffi_type_refuint       ffi_type_pointer
+#define ffi_type_reflong       ffi_type_pointer
+#define ffi_type_refulong      ffi_type_pointer
+#define ffi_type_refptrdiff_t  ffi_type_pointer
+#define ffi_type_refsize_t     ffi_type_pointer
+#define ffi_type_reffloat      ffi_type_pointer
+#define ffi_type_refdouble     ffi_type_pointer
+#define ffi_type_longlong      ffi_type_sint64
+#define ffi_type_ulonglong     ffi_type_uint64
+#define ffi_type_reflonglong   ffi_type_pointer
+#define ffi_type_refulonglong  ffi_type_pointer
+#define ffi_type_callback      ffi_type_pointer
 
 
 #ifdef WINDOWS
@@ -726,6 +744,18 @@ static int alien_function_call(lua_State *L) {
       **((char **)arg) = (char)lua_tonumber(L, j);
       nref++;
       break;
+    case AT_refshort:
+      arg = alloca(sizeof(short *));
+      *((short **)arg) = alloca(sizeof(short));
+      **((short **)arg) = (short)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refushort:
+      arg = alloca(sizeof(unsigned short *));
+      *((unsigned short **)arg) = alloca(sizeof(unsigned short));
+      **((unsigned short **)arg) = (unsigned short)lua_tonumber(L, j);
+      nref++;
+      break;
     case AT_refint:
       arg = alloca(sizeof(int *));
       *((int **)arg) = alloca(sizeof(int));
@@ -736,6 +766,36 @@ static int alien_function_call(lua_State *L) {
       arg = alloca(sizeof(unsigned int *));
       *((unsigned int **)arg) = alloca(sizeof(unsigned int));
       **((unsigned int **)arg) = (unsigned int)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_reflong:
+      arg = alloca(sizeof(long *));
+      *((long **)arg) = alloca(sizeof(long));
+      **((long **)arg) = (long)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refulong:
+      arg = alloca(sizeof(unsigned long *));
+      *((unsigned long **)arg) = alloca(sizeof(unsigned long));
+      **((unsigned long **)arg) = (unsigned long)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refptrdiff_t:
+      arg = alloca(sizeof(ptrdiff_t *));
+      *((ptrdiff_t **)arg) = alloca(sizeof(ptrdiff_t));
+      **((ptrdiff_t **)arg) = (ptrdiff_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refsize_t:
+      arg = alloca(sizeof(size_t *));
+      *((size_t **)arg) = alloca(sizeof(size_t));
+      **((size_t **)arg) = (size_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_reffloat:
+      arg = alloca(sizeof(float *));
+      *((float **)arg) = alloca(sizeof(float));
+      **((float **)arg) = (float)lua_tonumber(L, j);
       nref++;
       break;
     case AT_refdouble:
@@ -749,6 +809,18 @@ static int alien_function_call(lua_State *L) {
       break;
     case AT_ulonglong:
       arg = alloca(sizeof(unsigned long long)); *((unsigned long long*)arg) = (unsigned long long)lua_tonumber(L, j);
+      break;
+    case AT_reflonglong:
+      arg = alloca(sizeof(long long *));
+      *((long long **)arg) = alloca(sizeof(long long));
+      **((long long **)arg) = (long long)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refulonglong:
+      arg = alloca(sizeof(unsigned long long *));
+      *((unsigned long long **)arg) = alloca(sizeof(unsigned long long));
+      **((unsigned long long **)arg) = (unsigned long long)lua_tonumber(L, j);
+      nref++;
       break;
     case AT_callback:
       arg = alloca(sizeof(void*)); *((void**)arg) = (alien_Function *)alien_checkfunction(L, j)->fn;
@@ -785,9 +857,18 @@ static int alien_function_call(lua_State *L) {
   for(i = 0; i < nargs; i++) {
     switch(af->params[i]) {
     case AT_refchar: lua_pushnumber(L, **(char **)args[i]); break;
+    case AT_refshort: lua_pushnumber(L, **(short **)args[i]); break;
+    case AT_refushort: lua_pushnumber(L, **(unsigned short **)args[i]); break;
     case AT_refint: lua_pushnumber(L, **(int **)args[i]); break;
     case AT_refuint: lua_pushnumber(L, **(unsigned int **)args[i]); break;
+    case AT_reflong: lua_pushnumber(L, **(long **)args[i]); break;
+    case AT_refulong: lua_pushnumber(L, **(unsigned long **)args[i]); break;
+    case AT_refptrdiff_t: lua_pushnumber(L, **(ptrdiff_t **)args[i]); break;
+    case AT_refsize_t: lua_pushnumber(L, **(size_t **)args[i]); break;
+    case AT_reffloat: lua_pushnumber(L, **(float **)args[i]); break;
     case AT_refdouble: lua_pushnumber(L, **(double **)args[i]); break;
+    case AT_reflonglong: lua_pushnumber(L, **(long long **)args[i]); break;
+    case AT_refulonglong: lua_pushnumber(L, **(unsigned long long **)args[i]); break;
     default: break;
     }
   }
