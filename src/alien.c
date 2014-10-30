@@ -129,8 +129,8 @@ typedef struct { char c; void *x; } s_void_p;
 #define AT_CHAR_P_ALIGN (offsetof(s_char_p, x))
 #define AT_VOID_P_ALIGN (offsetof(s_void_p, x))
 
-/*              NAME          BASE       SIZEOF                 ALIGNMENT
-                ====          ====       ======                 =========       */
+/*              NAME             BASE          SIZEOF                 ALIGNMENT
+                ====             ====          ======                 =========       */
 #define type_map \
         MENTRY( "void",          void,         void,                  AT_NONE         ) \
         MENTRY( "byte",          byte,         unsigned char,         AT_CHAR         ) \
