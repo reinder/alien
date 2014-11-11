@@ -116,6 +116,10 @@ typedef struct { char c; float x; } s_float;
 typedef struct { char c; double x; } s_double;
 typedef struct { char c; char *x; } s_char_p;
 typedef struct { char c; void *x; } s_void_p;
+typedef struct { char c; int8_t x; } s_int8;
+typedef struct { char c; int16_t x; } s_int16;
+typedef struct { char c; int32_t x; } s_int32;
+typedef struct { char c; int64_t x; } s_int64;
 
 #define AT_NONE_ALIGN /* unused */
 #define AT_CHAR_ALIGN (offsetof(s_char, x))
@@ -128,6 +132,10 @@ typedef struct { char c; void *x; } s_void_p;
 #define AT_DOUBLE_ALIGN (offsetof(s_double, x))
 #define AT_CHAR_P_ALIGN (offsetof(s_char_p, x))
 #define AT_VOID_P_ALIGN (offsetof(s_void_p, x))
+#define AT_INT8_ALIGN (offsetof(s_int8, x))
+#define AT_INT16_ALIGN (offsetof(s_int16, x))
+#define AT_INT32_ALIGN (offsetof(s_int32, x))
+#define AT_INT64_ALIGN (offsetof(s_int64, x))
 
 /*              NAME             BASE          SIZEOF                 ALIGNMENT
                 ====             ====          ======                 =========       */
@@ -162,6 +170,22 @@ typedef struct { char c; void *x; } s_void_p;
         MENTRY( "ulonglong",     ulonglong,    unsigned long long,    AT_LONGLONG     ) \
         MENTRY( "ref longlong",  reflonglong,  long long *,           AT_VOID_P       ) \
         MENTRY( "ref ulonglong", refulonglong, unsigned long long *,  AT_VOID_P       ) \
+        MENTRY( "int8",          int8,         int8_t,                AT_INT8         ) \
+        MENTRY( "int16",         int16,        int16_t,               AT_INT16        ) \
+        MENTRY( "int32",         int32,        int32_t,               AT_INT32        ) \
+        MENTRY( "int64",         int64,        int64_t,               AT_INT64        ) \
+        MENTRY( "uint8",         uint8,        int8_t,                AT_INT8         ) \
+        MENTRY( "uint16",        uint16,       int16_t,               AT_INT16        ) \
+        MENTRY( "uint32",        uint32,       int32_t,               AT_INT32        ) \
+        MENTRY( "uint64",        uint64,       int64_t,               AT_INT64        ) \
+        MENTRY( "ref int8",      refint8,      int8_t *,              AT_VOID_P       ) \
+        MENTRY( "ref int16",     refint16,     int16_t *,             AT_VOID_P       ) \
+        MENTRY( "ref int32",     refint32,     int32_t *,             AT_VOID_P       ) \
+        MENTRY( "ref int64",     refint64,     int64_t *,             AT_VOID_P       ) \
+        MENTRY( "ref uint8",     refuint8,     int8_t *,              AT_VOID_P       ) \
+        MENTRY( "ref uint16",    refuint16,    int16_t *,             AT_VOID_P       ) \
+        MENTRY( "ref uint32",    refuint32,    int32_t *,             AT_VOID_P       ) \
+        MENTRY( "ref uint64",    refuint64,    int64_t *,             AT_VOID_P       ) \
         MENTRY( "callback",      callback,     void *,                AT_VOID_P       )
 
 typedef enum {
@@ -199,6 +223,18 @@ static const char *const alien_typenames[] =  {
 #define ffi_type_ulonglong     ffi_type_uint64
 #define ffi_type_reflonglong   ffi_type_pointer
 #define ffi_type_refulonglong  ffi_type_pointer
+#define ffi_type_int8          ffi_type_sint8
+#define ffi_type_int16         ffi_type_sint16
+#define ffi_type_int32         ffi_type_sint32
+#define ffi_type_int64         ffi_type_sint64
+#define ffi_type_refint8       ffi_type_pointer
+#define ffi_type_refint16      ffi_type_pointer
+#define ffi_type_refint32      ffi_type_pointer
+#define ffi_type_refint64      ffi_type_pointer
+#define ffi_type_refuint8      ffi_type_pointer
+#define ffi_type_refuint16     ffi_type_pointer
+#define ffi_type_refuint32     ffi_type_pointer
+#define ffi_type_refuint64     ffi_type_pointer
 #define ffi_type_callback      ffi_type_pointer
 
 
@@ -677,6 +713,14 @@ static int alien_function_call(lua_State *L) {
     float f;
     double d;
     void *p;
+    int8_t i8;
+    int16_t i16;
+    int32_t i32;
+    int64_t i64;
+    uint8_t u8;
+    uint16_t u16;
+    uint32_t u32;
+    uint64_t u64;
   } ret;
   int i, nref = 0;
   void **args = NULL;
@@ -822,6 +866,78 @@ static int alien_function_call(lua_State *L) {
       **((unsigned long long **)arg) = (unsigned long long)lua_tonumber(L, j);
       nref++;
       break;
+    case AT_int8:
+      arg = alloca(sizeof(int8_t)); *((int8_t*)arg) = (int8_t)lua_tonumber(L, j);
+      break;
+    case AT_int16:
+      arg = alloca(sizeof(int16_t)); *((int16_t*)arg) = (int16_t)lua_tonumber(L, j);
+      break;
+    case AT_int32:
+      arg = alloca(sizeof(int32_t)); *((int32_t*)arg) = (int32_t)lua_tonumber(L, j);
+      break;
+    case AT_int64:
+      arg = alloca(sizeof(int64_t)); *((int64_t*)arg) = (int64_t)lua_tonumber(L, j);
+      break;
+    case AT_uint8:
+      arg = alloca(sizeof(uint8_t)); *((uint8_t*)arg) = (uint8_t)lua_tonumber(L, j);
+      break;
+    case AT_uint16:
+      arg = alloca(sizeof(uint16_t)); *((uint16_t*)arg) = (uint16_t)lua_tonumber(L, j);
+      break;
+    case AT_uint32:
+      arg = alloca(sizeof(uint32_t)); *((uint32_t*)arg) = (uint32_t)lua_tonumber(L, j);
+      break;
+    case AT_uint64:
+      arg = alloca(sizeof(uint64_t)); *((uint64_t*)arg) = (uint64_t)lua_tonumber(L, j);
+      break;
+    case AT_refint8:
+      arg = alloca(sizeof(int8_t *));
+      *((int8_t **)arg) = alloca(sizeof(int8_t));
+      **((int8_t **)arg) = (int8_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refint16:
+      arg = alloca(sizeof(int16_t *));
+      *((int16_t **)arg) = alloca(sizeof(int16_t));
+      **((int16_t **)arg) = (int16_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refint32:
+      arg = alloca(sizeof(int32_t *));
+      *((int32_t **)arg) = alloca(sizeof(int32_t));
+      **((int32_t **)arg) = (int32_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refint64:
+      arg = alloca(sizeof(int64_t *));
+      *((int64_t **)arg) = alloca(sizeof(int64_t));
+      **((int64_t **)arg) = (int64_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refuint8:
+      arg = alloca(sizeof(uint8_t *));
+      *((uint8_t **)arg) = alloca(sizeof(uint8_t));
+      **((uint8_t **)arg) = (uint8_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refuint16:
+      arg = alloca(sizeof(uint16_t *));
+      *((uint16_t **)arg) = alloca(sizeof(uint16_t));
+      **((uint16_t **)arg) = (uint16_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refuint32:
+      arg = alloca(sizeof(uint32_t *));
+      *((uint32_t **)arg) = alloca(sizeof(uint32_t));
+      **((uint32_t **)arg) = (uint32_t)lua_tonumber(L, j);
+      nref++;
+      break;
+    case AT_refuint64:
+      arg = alloca(sizeof(uint64_t *));
+      *((uint64_t **)arg) = alloca(sizeof(uint64_t));
+      **((uint64_t **)arg) = (uint64_t)lua_tonumber(L, j);
+      nref++;
+      break;
     case AT_callback:
       arg = alloca(sizeof(void*)); *((void**)arg) = (alien_Function *)alien_checkfunction(L, j)->fn;
       break;
@@ -850,6 +966,14 @@ static int alien_function_call(lua_State *L) {
     (ret.p ? lua_pushstring(L, (const char *)ret.p) : lua_pushnil(L)); break;
   case AT_pointer: ffi_call(cif, af->fn, &ret.p, args);
     (ret.p ? lua_pushlightuserdata(L, ret.p) : lua_pushnil(L)); break;
+  case AT_int8: ffi_call(cif, af->fn, &ret.i8, args); lua_pushnumber(L, ret.i8); break;
+  case AT_int16: ffi_call(cif, af->fn, &ret.i16, args); lua_pushnumber(L, ret.i16); break;
+  case AT_int32: ffi_call(cif, af->fn, &ret.i32, args); lua_pushnumber(L, ret.i32); break;
+  case AT_int64: ffi_call(cif, af->fn, &ret.i64, args); lua_pushnumber(L, ret.i64); break;
+  case AT_uint8: ffi_call(cif, af->fn, &ret.u8, args); lua_pushnumber(L, ret.u8); break;
+  case AT_uint16: ffi_call(cif, af->fn, &ret.u16, args); lua_pushnumber(L, ret.u16); break;
+  case AT_uint32: ffi_call(cif, af->fn, &ret.u32, args); lua_pushnumber(L, ret.u32); break;
+  case AT_uint64: ffi_call(cif, af->fn, &ret.u64, args); lua_pushnumber(L, ret.u64); break;
   default:
     return luaL_error(L, "alien: unknown return type (function %s)", af->name ?
                       af->name : "anonymous");
@@ -869,6 +993,14 @@ static int alien_function_call(lua_State *L) {
     case AT_refdouble: lua_pushnumber(L, **(double **)args[i]); break;
     case AT_reflonglong: lua_pushnumber(L, **(long long **)args[i]); break;
     case AT_refulonglong: lua_pushnumber(L, **(unsigned long long **)args[i]); break;
+    case AT_refint8: lua_pushnumber(L, **(int8_t **)args[i]); break;
+    case AT_refint16: lua_pushnumber(L, **(int16_t **)args[i]); break;
+    case AT_refint32: lua_pushnumber(L, **(int32_t **)args[i]); break;
+    case AT_refint64: lua_pushnumber(L, **(int64_t **)args[i]); break;
+    case AT_refuint8: lua_pushnumber(L, **(uint8_t **)args[i]); break;
+    case AT_refuint16: lua_pushnumber(L, **(uint16_t **)args[i]); break;
+    case AT_refuint32: lua_pushnumber(L, **(uint32_t **)args[i]); break;
+    case AT_refuint64: lua_pushnumber(L, **(uint64_t **)args[i]); break;
     default: break;
     }
   }
