@@ -206,8 +206,10 @@ static const char *const alien_typenames[] =  {
 };
 
 #if CHAR_MAX == SCHAR_MAX
+ #define IS_CHAR_SIGNED 1
  #define ffi_type_char          ffi_type_schar
 #elif CHAR_MAX == UCHAR_MAX
+ #define IS_CHAR_SIGNED 0
  #define ffi_type_char          ffi_type_uchar
 #else
  #error "char not supported"
@@ -1529,6 +1531,11 @@ int luaopen_alien_c(lua_State *L) {
   /* Set platform */
   lua_pushliteral(L, PLATFORM);
   lua_setfield(L, -2, "platform");
+  /* char signess */
+  lua_pushboolean(L, IS_CHAR_SIGNED);
+  lua_setfield(L, -2, "is_char_signed");
+  lua_pushboolean(L, !IS_CHAR_SIGNED);
+  lua_setfield(L, -2, "is_char_unsigned");  
   /* Initialize libraries table */
   al = (alien_Library *)lua_newuserdata(L, sizeof(alien_Library));
   al->lib = NULL;
